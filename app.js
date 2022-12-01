@@ -47,17 +47,34 @@ app.get("/",function(req,res){
     let country = "unknown";
     let region = "unknown";
     var ip = req.clientIp;
-    url = url + ip + "/json/";
-    console.log(url);
-    https.get(url,function(response){
-        console.log(response.statusCode);
-        response.on("data",function(data){
-            const ipData = JSON.parse(data);
-            city = ipData.city;
-            country = ipData.country;
-            region = ipData.regionName;
-        });
-    });   
+    // url = url + ip + "/json/";
+    // console.log(url);
+    // https.get(url,function(response){
+    //     console.log(response.statusCode);
+    //     response.on("data",function(data){
+    //         const ipData = JSON.parse(data);
+    //         city = ipData.city;
+    //         country = ipData.country;
+    //         region = ipData.regionName;
+    //     });
+    // });   
+    const options = {
+  path: '/' + ip + '/json/',
+  host: 'ipapi.co',
+  port: 443,
+  headers: { 'User-Agent': 'nodejs-ipapi-v1.02' }
+};
+https.get(options, function(resp){
+    var body = ''
+    resp.on('data', function(data){
+        body += data;
+    });
+
+    resp.on('end', function(){
+        var loc = JSON.parse(body);
+        console.log(loc.city);
+    });
+});
     res.render("index",{ip:ip,city:city,country:country,region:region});
     console.log(ip);
     });    
