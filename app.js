@@ -16,7 +16,7 @@ app.get("/",function(req,res){
     // var country = '';
     // var region = '';
     var ip = req.clientIp;
-    ip = "152.57.223.112";
+   // ip = "152.57.223.112";
     // // url = url + "apiKey=" + process.env.apiKey + "&" + ip ;
     // url = process.env.URL1 + ip;
     console.log(ip);
