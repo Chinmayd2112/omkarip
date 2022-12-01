@@ -1,40 +1,9 @@
-// Skip to content
-// Search or jump to…
-// Pull requests
-// Issues
-// Codespaces
-// Marketplace
-// Explore
- 
-// @Chinmayd2112 
-// omkarae
-// /
-// Visitor-Profiling
-// Public
-// Code
-// Issues
-// Pull requests
-// Actions
-// Projects
-// Security
-// Insights
-// Visitor-Profiling/app.js /
-// @omkarae
-// omkarae 2nd API
-// Latest commit 5c15f2c 8 minutes ago
-//  History
-//  1 contributor
-// 37 lines (32 sloc)  1.02 KB
-require('dotenv').config();
-
+require('dotenv').config()
 const express = require("express");
-const { NOTIMP } = require('node:dns');
 // const https = require("https");
 const https = require('node:https');
-
+// const http = require('http');
 const app = express();
-// const IP = require('ip'); 
-// var net = require('net');
 const requestIp = require('request-ip');
 app.set("view engine","ejs");
 
@@ -42,60 +11,42 @@ app.set("view engine","ejs");
 
 app.use(requestIp.mw({ attributeName : 'clientIp' }));
 app.get("/",function(req,res){
-    let url = process.env.URL;
-    let city = "unknown";
-    let country = "unknown";
-    let region = "unknown";
+    // let url = process.env.URL;
+    // var city = '';
+    // var country = '';
+    // var region = '';
     var ip = req.clientIp;
-    // url = url + ip + "/json/";
-    // console.log(url);
-    // https.get(url,function(response){
-    //     console.log(response.statusCode);
-    //     response.on("data",function(data){
-    //         const ipData = JSON.parse(data);
-    //         city = ipData.city;
-    //         country = ipData.country;
-    //         region = ipData.regionName;
-    //     });
-    // });   
+    ip = "152.57.223.112";
+    // // url = url + "apiKey=" + process.env.apiKey + "&" + ip ;
+    // url = process.env.URL1 + ip;
+    console.log(ip);
     const options = {
-  path: '/' + ip + '/json/',
-  host: 'ipapi.co',
-  port: 443,
-  headers: { 'User-Agent': 'nodejs-ipapi-v1.02' }
-};
-https.get(options, function(resp){
-    var body = ''
-    resp.on('data', function(data){
-        body += data;
+        path: '/' + ip + '/json/',
+        host: 'ipapi.co',
+        port: 443,
+        headers: { 'User-Agent': 'nodejs-ipapi-v1.02' }
+      };
+      console.log(options);
+      https.get(options, function(resp){
+          var body = ''
+          resp.on('data', function(data){
+              body += data;
+          });
+      
+          resp.on('end', function(){
+              var loc = JSON.parse(body);
+              const city = loc.city;
+              const country = loc.country_name;
+              const region = loc.region;
+              res.render("index",{ip:ip,city:city,country:country,region:region});
+          });
+          
+      });
+    console.log(ip);
     });
 
-    resp.on('end', function(){
-        var loc = JSON.parse(body);
-        console.log(loc.city);
-    });
-});
-    res.render("index",{ip:ip,city:city,country:country,region:region});
-    console.log(ip);
-    });    
-   
 
 
 app.listen(3000, function () {
     console.log('Server is running on port 3000')
     });
-// Footer
-// © 2022 GitHub, Inc.
-// Footer navigation
-// Terms
-// Privacy
-// Security
-// Status
-// Docs
-// Contact GitHub
-// Pricing
-// API
-// Training
-// Blog
-// About
-// Visitor-Profiling/app.js at main · omkarae/Visitor-Profiling
